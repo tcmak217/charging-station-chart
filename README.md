@@ -1,1 +1,1 @@
-# charing-station-chart
+# charging-station-chart
