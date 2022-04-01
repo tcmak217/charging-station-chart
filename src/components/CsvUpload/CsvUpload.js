@@ -4,8 +4,9 @@ import "./CsvUpload.css";
 function CsvUpload() {
   return (
     <>
-      <input type="file" id="myUploadFile" />
-      <div id="main"></div>
+      <form>
+        <input type="file" id="myUploadFile" accept=".csv" />
+      </form>
     </>
   );
 }
