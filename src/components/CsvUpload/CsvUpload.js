@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import Papa from "papaparse";
 import "./CsvUpload.css";
 
 function CsvUpload() {
-  const [file, setFile] = useState();
+  const [file, setFile] = useState(null);
+  const [csvString, setCsvString] = useState("");
 
   const fileReader = new FileReader();
 
@@ -16,12 +18,17 @@ function CsvUpload() {
     if (file) {
       fileReader.onload = function (event) {
         console.log(event.target.result);
-        const csvOutput = event.target.result;
+        setCsvString(event.target.result);
       };
 
       fileReader.readAsText(file);
     }
   };
+
+  useEffect(() => {
+    const results = Papa.parse(csvString, { header: true });
+    console.log(results);
+  }, [csvString]);
 
   return (
     <>
