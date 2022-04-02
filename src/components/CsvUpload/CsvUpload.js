@@ -2,10 +2,9 @@ import React, { useEffect, useState } from "react";
 import Papa from "papaparse";
 import "./CsvUpload.css";
 
-function CsvUpload() {
+function CsvUpload({ csvJson, handleSetCsvJson }) {
   const [file, setFile] = useState(null);
   const [csvString, setCsvString] = useState("");
-  const [csvJson, setCsvJson] = useState({});
 
   const fileReader = new FileReader();
 
@@ -29,7 +28,6 @@ function CsvUpload() {
     let csvParse = {};
     if (csvString !== "") {
       csvParse = Papa.parse(csvString, { header: true });
-      console.log(csvParse.data);
       csvParse = csvParse.data
         .filter(
           (row) =>
@@ -46,7 +44,7 @@ function CsvUpload() {
           };
         });
       console.log(csvParse);
-      setCsvJson(csvParse);
+      handleSetCsvJson(csvParse);
     }
   }, [csvString]);
 
