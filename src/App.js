@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import CsvUpload from "./components/CsvUpload/CsvUpload";
 import Chart from "./components/Chart/Chart";
+import FetchData from "./components/FetchData/FetchData";
 
 function App() {
   const [csvJson, setCsvJson] = useState({});
@@ -13,6 +14,7 @@ function App() {
         csvJson={csvJson}
         handleSetCsvJson={handleSetCsvJson}
       ></CsvUpload>
+      <FetchData></FetchData>
       <Chart csvJson={csvJson}></Chart>
     </>
   );
