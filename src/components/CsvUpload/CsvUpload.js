@@ -5,6 +5,7 @@ import "./CsvUpload.css";
 function CsvUpload() {
   const [file, setFile] = useState(null);
   const [csvString, setCsvString] = useState("");
+  const [csvJson, setCsvJson] = useState({});
 
   const fileReader = new FileReader();
 
@@ -17,7 +18,6 @@ function CsvUpload() {
     e.preventDefault();
     if (file) {
       fileReader.onload = function (event) {
-        console.log(event.target.result);
         setCsvString(event.target.result);
       };
 
@@ -26,8 +26,28 @@ function CsvUpload() {
   };
 
   useEffect(() => {
-    const results = Papa.parse(csvString, { header: true });
-    console.log(results);
+    let csvParse = {};
+    if (csvString !== "") {
+      csvParse = Papa.parse(csvString, { header: true });
+      console.log(csvParse.data);
+      csvParse = csvParse.data
+        .filter(
+          (row) =>
+            (row.ID === "1_1") |
+            (row.ID === "1_2") |
+            (row.ID === "1_3") |
+            (row.ID === "1_4")
+        )
+        .map((row) => {
+          return {
+            Date: row.Date,
+            ID: row.ID,
+            "Current Sum(A)": row["Current Sum(A)"],
+          };
+        });
+      console.log(csvParse);
+      setCsvJson(csvParse);
+    }
   }, [csvString]);
 
   return (
