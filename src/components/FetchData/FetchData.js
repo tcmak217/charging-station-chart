@@ -19,7 +19,7 @@ function FetchData() {
       .post(
         "https://open.delightintl.com/api/device-status/query",
         {
-          type: "3",
+          type: "4",
           projectId: 30013,
           startDate: "2021-12-27T16:00:00.000Z",
           endDate: "2021-12-28T16:00:00.000Z",
