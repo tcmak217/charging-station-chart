@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
+import CircularProgress from "@mui/material/CircularProgress";
 import axios from "axios";
 
 function FetchData() {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const handleFetch = async (e) => {
     e.preventDefault();
     let token;
+    setIsLoading(true);
     await axios
       .post("https://open.delightintl.com/api/auth/login", {
         username: userName,
@@ -34,6 +37,7 @@ function FetchData() {
       .then((res) => {
         console.log(res.data.data.contents);
       });
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -63,6 +67,7 @@ function FetchData() {
         />
         <br></br>
         <button onClick={handleFetch}>Fetch data</button>
+        {isLoading ? <CircularProgress /> : null}
       </form>
     </div>
   );
