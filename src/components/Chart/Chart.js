@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import * as echarts from "echarts";
-import moment from "moment";
 
 function Chart({ csvJson }) {
   const myChart = useRef(null);
   const [chart, setChart] = useState(null);
+
+  const items = ["1_1", "1_2", "1_3", "1_4"];
 
   useEffect(() => {
     // initialize the echarts instance
@@ -42,29 +43,31 @@ function Chart({ csvJson }) {
         newChart = echarts.init(myChart.current);
       } else {
         console.log("chart exist");
+        // console.log(chart);
         newChart = chart;
       }
 
-      let tempData = csvJson.filter((row) => {
-        return row.ID === "1_1";
-      });
-      console.log(tempData);
-
       newChart.setOption({
-        series: tempData.map((row) => {
+        series: items.map((item) => {
           return {
-            name: row.ID,
+            name: item,
             type: "line",
-            data: [moment(row.Date).format(), parseInt(row["Current Sum(A)"])],
-            areaStyle: {},
+            smooth: true,
             symbol: "none",
-            //   stack: "Total",
+            areaStyle: {},
+            stack: "x",
+            data: csvJson
+              .filter((row) => {
+                return row.ID === item;
+              })
+              .map((row) => {
+                return [row.Date, row["Current Sum(A)"]];
+              }),
           };
         }),
-        // legend: {
-        //   // data: ["1_1", "1_2", "1_ 3", "1_4"],
-        //   data: tempData.map((row) => row.ID),
-        // },
+        legend: {
+          data: items,
+        },
       });
     }
   }, [csvJson]);

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import moment from "moment";
 import Papa from "papaparse";
 import "./CsvUpload.css";
 
@@ -38,7 +39,7 @@ function CsvUpload({ csvJson, handleSetCsvJson }) {
         )
         .map((row) => {
           return {
-            Date: row.Date,
+            Date: moment(row.Date, "MM/DD/YY hh:mm:ss a").format(),
             ID: row.ID,
             "Current Sum(A)": row["Current Sum(A)"],
           };

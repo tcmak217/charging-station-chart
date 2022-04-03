@@ -41,8 +41,8 @@ function FetchData() {
   };
 
   useEffect(() => {
-    console.log("userName", userName);
-    console.log("password", password);
+    // console.log("userName", userName);
+    // console.log("password", password);
   }, [userName, password]);
 
   return (
