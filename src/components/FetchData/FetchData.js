@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 function FetchData() {
-  const [userName, setUserName] = useState("cec-evc-admin");
-  const [password, setPassword] = useState("admin");
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
   const handleFetch = async (e) => {
     e.preventDefault();
     let token;
