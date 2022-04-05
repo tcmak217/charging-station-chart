@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
+import moment from "moment";
 import CircularProgress from "@mui/material/CircularProgress";
 import axios from "axios";
 
-function FetchData() {
+function FetchData({ csvJson, handleSetCsvJson }) {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -35,7 +36,24 @@ function FetchData() {
         }
       )
       .then((res) => {
+        const parsedData = res.data.data.contents
+          .filter(
+            (row) =>
+              (row[1] === "1_1") |
+              (row[1] === "1_2") |
+              (row[1] === "1_3") |
+              (row[1] === "1_4")
+          )
+          .map((row) => {
+            return {
+              Date: moment(row[0], "YYYY-MM-DD hh:mm:ss").format(),
+              ID: row[1],
+              "Current Sum(A)": row[11].toString(),
+            };
+          });
+        handleSetCsvJson(parsedData);
         console.log(res.data.data.contents);
+        console.log(parsedData);
       });
     setIsLoading(false);
   };

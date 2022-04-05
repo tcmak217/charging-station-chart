@@ -14,7 +14,10 @@ function App() {
         csvJson={csvJson}
         handleSetCsvJson={handleSetCsvJson}
       ></CsvUpload>
-      <FetchData></FetchData>
+      <FetchData
+        csvJson={csvJson}
+        handleSetCsvJson={handleSetCsvJson}
+      ></FetchData>
       <Chart csvJson={csvJson}></Chart>
     </>
   );
