@@ -44,7 +44,7 @@ function CsvUpload({ csvJson, handleSetCsvJson }) {
             "Current Sum(A)": row["Current Sum(A)"],
           };
         });
-      console.log(csvParse);
+      // console.log(csvParse);
       handleSetCsvJson(csvParse);
     }
   }, [csvString]);

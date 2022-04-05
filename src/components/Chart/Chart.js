@@ -1,11 +1,90 @@
 import React, { useState, useEffect, useRef } from "react";
+import moment from "moment";
 import * as echarts from "echarts";
 
 function Chart({ csvJson }) {
   const myChart = useRef(null);
   const [chart, setChart] = useState(null);
 
-  const items = ["1_1", "1_2", "1_3", "1_4"];
+  const sortByTime = (data) => {
+    return data.sort((a, b) => moment(a.Date).diff(moment(b.Date)));
+  };
+
+  const removeDuplicatedData = (data) => {
+    return Array.from(new Set(data));
+  };
+
+  const interpolation = (csvJson) => {
+    const idList = ["1_1", "1_2", "1_3", "1_4"];
+
+    // Extract date column from csvJson and sort it by time
+    const sortedDate = sortByTime(csvJson).map((data) => data.Date);
+    // console.log("sortedDate", sortedDate);
+
+    // Remove all duplicated value
+    const uniqueDate = removeDuplicatedData(sortedDate);
+    // console.log("uniqueDate", uniqueDate);
+
+    // Split csvJson into 4 objects grouped by ID
+    const splitData = idList.map((id) => {
+      return {
+        ID: id,
+        data: sortByTime(
+          csvJson.filter((item) => {
+            return item.ID === id;
+          })
+        ),
+      };
+    });
+    // console.log("splitData", splitData);
+
+    // Substitute the Date column with uniqueDate
+    // Set Current Sum(A) to null if there is no value on that data point in the original dataset (require interpolation)
+    const interpolatedData = idList.map((id) => {
+      return {
+        ID: id,
+        data: uniqueDate.map((date) => {
+          return {
+            Date: date,
+            ID: id,
+            "Current Sum(A)": splitData
+              .filter((data) => {
+                return data.ID === id;
+              })[0]
+              .data.filter((row) => {
+                return row.Date === date;
+              })[0]
+              ? splitData
+                  .filter((data) => {
+                    return data.ID === id;
+                  })[0]
+                  .data.filter((row) => {
+                    return row.Date === date;
+                  })[0]["Current Sum(A)"]
+              : null,
+          };
+        }),
+      };
+    });
+
+    // Use previous value to interpolate the dataset
+    interpolatedData.forEach((row) => {
+      let prevValue = "1";
+
+      row.data.forEach((row) => {
+        if (row["Current Sum(A)"] === null) {
+          row["Current Sum(A)"] = prevValue;
+        } else {
+          prevValue = row["Current Sum(A)"];
+        }
+      });
+    });
+    console.log("interpolatedData", interpolatedData);
+
+    return interpolatedData;
+  };
+
+  const idList = ["1_1", "1_2", "1_3", "1_4"];
 
   useEffect(() => {
     // initialize the echarts instance
@@ -47,26 +126,28 @@ function Chart({ csvJson }) {
         newChart = chart;
       }
 
+      const interpolatedData = interpolation(csvJson);
+
       newChart.setOption({
-        series: items.map((item) => {
+        series: idList.map((id) => {
           return {
-            name: item,
+            name: id,
             type: "line",
             smooth: true,
             symbol: "none",
             areaStyle: {},
             stack: "x",
-            data: csvJson
+            data: interpolatedData
               .filter((row) => {
-                return row.ID === item;
-              })
-              .map((row) => {
+                return row.ID === id;
+              })[0]
+              .data.map((row) => {
                 return [row.Date, row["Current Sum(A)"]];
               }),
           };
         }),
         legend: {
-          data: items,
+          data: idList,
         },
       });
     }
