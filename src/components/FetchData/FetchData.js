@@ -2,11 +2,23 @@ import React, { useEffect, useState } from "react";
 import moment from "moment";
 import CircularProgress from "@mui/material/CircularProgress";
 import axios from "axios";
+import DateRangePicker from "../DateRangePicker/DateRangePicker";
 
 function FetchData({ csvJson, handleSetCsvJson }) {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
   const [isLoading, setIsLoading] = useState(false);
+
+  const handleSetStartDate = (startDate) => {
+    setStartDate(startDate);
+  };
+
+  const handleSetEndDate = (endDate) => {
+    setEndDate(endDate);
+  };
+
   const handleFetch = async (e) => {
     e.preventDefault();
     let token;
@@ -25,8 +37,8 @@ function FetchData({ csvJson, handleSetCsvJson }) {
         {
           type: "4",
           projectId: 30013,
-          startDate: "2021-12-27T16:00:00.000Z",
-          endDate: "2021-12-28T16:00:00.000Z",
+          startDate: moment(startDate).startOf("day").format(),
+          endDate: moment(endDate).startOf("day").format(),
           areas: [],
         },
         {
@@ -85,6 +97,12 @@ function FetchData({ csvJson, handleSetCsvJson }) {
           onChange={(e) => setPassword(e.target.value)}
         />
         <br></br>
+        <DateRangePicker
+          startDate={startDate}
+          endDate={endDate}
+          handleSetStartDate={handleSetStartDate}
+          handleSetEndDate={handleSetEndDate}
+        ></DateRangePicker>
         <button onClick={handleFetch}>Fetch data</button>
         {isLoading ? <CircularProgress /> : null}
       </form>
