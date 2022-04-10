@@ -49,6 +49,7 @@ function FetchData({ csvJson, handleSetCsvJson }) {
               Date: moment(row[0], "YYYY-MM-DD hh:mm:ss").format(),
               ID: row[1],
               "Current Sum(A)": row[11].toString(),
+              Name: row[2],
             };
           });
         handleSetCsvJson(parsedData);

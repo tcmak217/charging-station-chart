@@ -14,6 +14,13 @@ function Chart({ csvJson }) {
     return Array.from(new Set(data));
   };
 
+  const extractNames = (idList, csvJson) => {
+    // console.log("idList", idList, "csvJson", csvJson);
+    return idList.map((id) => {
+      return { ID: id, Name: csvJson.filter((row) => row.ID === id)[0].Name };
+    });
+  };
+
   const interpolation = (csvJson) => {
     const idList = ["1_1", "1_2", "1_3", "1_4"];
 
@@ -116,6 +123,8 @@ function Chart({ csvJson }) {
 
   useEffect(() => {
     if (Object.keys(csvJson).length !== 0) {
+      const nameList = extractNames(idList, csvJson);
+      console.log("nameList", nameList);
       let newChart;
       if (chart === null) {
         console.log("chart is null");
@@ -131,7 +140,9 @@ function Chart({ csvJson }) {
       newChart.setOption({
         series: idList.map((id) => {
           return {
-            name: id,
+            name: nameList.filter((row) => {
+              return row.ID === id;
+            })[0].Name,
             type: "line",
             smooth: true,
             symbol: "none",
@@ -147,7 +158,9 @@ function Chart({ csvJson }) {
           };
         }),
         legend: {
-          data: idList,
+          data: nameList.map((row) => {
+            return row.Name;
+          }),
         },
       });
     }

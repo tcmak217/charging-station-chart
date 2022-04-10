@@ -42,6 +42,7 @@ function CsvUpload({ csvJson, handleSetCsvJson }) {
             Date: moment(row.Date, "MM/DD/YY hh:mm:ss a").format(),
             ID: row.ID,
             "Current Sum(A)": row["Current Sum(A)"],
+            Name: row.Name,
           };
         });
       console.log(csvParse);
