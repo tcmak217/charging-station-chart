@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import moment from "moment";
 import * as echarts from "echarts";
 
-function Chart({ csvJson }) {
+function Chart({ csvJson, chartDataType }) {
   const myChart = useRef(null);
   const [chart, setChart] = useState(null);
 
@@ -69,6 +69,21 @@ function Chart({ csvJson }) {
                     return row.Date === date;
                   })[0]["Current Sum(A)"]
               : null,
+            Switch: splitData
+              .filter((data) => {
+                return data.ID === id;
+              })[0]
+              .data.filter((row) => {
+                return row.Date === date;
+              })[0]
+              ? splitData
+                  .filter((data) => {
+                    return data.ID === id;
+                  })[0]
+                  .data.filter((row) => {
+                    return row.Date === date;
+                  })[0].Switch
+              : null,
           };
         }),
       };
@@ -76,13 +91,20 @@ function Chart({ csvJson }) {
 
     // Use previous value to interpolate the dataset
     interpolatedData.forEach((row) => {
-      let prevValue = "1";
+      let prevCurrentValue = "0";
+      let prevSwitchValue = 0;
 
       row.data.forEach((row) => {
         if (row["Current Sum(A)"] === null) {
-          row["Current Sum(A)"] = prevValue;
+          row["Current Sum(A)"] = prevCurrentValue;
         } else {
-          prevValue = row["Current Sum(A)"];
+          prevCurrentValue = row["Current Sum(A)"];
+        }
+
+        if (row.Switch === null) {
+          row.Switch = prevSwitchValue;
+        } else {
+          prevSwitchValue = row.Switch;
         }
       });
     });
@@ -153,7 +175,14 @@ function Chart({ csvJson }) {
                 return row.ID === id;
               })[0]
               .data.map((row) => {
-                return [row.Date, row["Current Sum(A)"]];
+                return [
+                  row.Date,
+                  chartDataType === "Current"
+                    ? row["Current Sum(A)"]
+                    : chartDataType === "Switch"
+                    ? row.Switch
+                    : row["Current Sum(A)"],
+                ];
               }),
           };
         }),
@@ -164,7 +193,7 @@ function Chart({ csvJson }) {
         },
       });
     }
-  }, [csvJson]);
+  }, [csvJson, chartDataType]);
 
   return (
     <div id="main" ref={myChart}>

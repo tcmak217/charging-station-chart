@@ -62,6 +62,7 @@ function FetchData({ csvJson, handleSetCsvJson }) {
               ID: row[1],
               "Current Sum(A)": row[11].toString(),
               Name: row[2],
+              Switch: row[3],
             };
           });
         handleSetCsvJson(parsedData);

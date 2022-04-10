@@ -43,6 +43,7 @@ function CsvUpload({ csvJson, handleSetCsvJson }) {
             ID: row.ID,
             "Current Sum(A)": row["Current Sum(A)"],
             Name: row.Name,
+            Switch: row.Switch,
           };
         });
       console.log(csvParse);

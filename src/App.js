@@ -2,11 +2,20 @@ import React, { useState } from "react";
 import CsvUpload from "./components/CsvUpload/CsvUpload";
 import Chart from "./components/Chart/Chart";
 import FetchData from "./components/FetchData/FetchData";
+import ChartPicker from "./components/ChartPicker/ChartPicker";
+
 function App() {
   const [csvJson, setCsvJson] = useState({});
+  const [chartDataType, setChartDataType] = useState("Current");
+
   const handleSetCsvJson = (csvJson) => {
     setCsvJson(csvJson);
   };
+
+  const handleSetChartDataType = (chartDataType) => {
+    setChartDataType(chartDataType);
+  };
+
   return (
     <>
       <CsvUpload
@@ -17,7 +26,11 @@ function App() {
         csvJson={csvJson}
         handleSetCsvJson={handleSetCsvJson}
       ></FetchData>
-      <Chart csvJson={csvJson}></Chart>
+      <ChartPicker
+        chartDataType={chartDataType}
+        handleSetChartDataType={handleSetChartDataType}
+      ></ChartPicker>
+      <Chart csvJson={csvJson} chartDataType={chartDataType}></Chart>
     </>
   );
 }
