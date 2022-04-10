@@ -38,7 +38,7 @@ function FetchData({ csvJson, handleSetCsvJson }) {
           type: "4",
           projectId: 30013,
           startDate: moment(startDate).startOf("day").format(),
-          endDate: moment(endDate).startOf("day").format(),
+          endDate: moment(endDate).endOf("day").format(),
           areas: [],
         },
         {
