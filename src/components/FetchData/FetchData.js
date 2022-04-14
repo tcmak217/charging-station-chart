@@ -5,8 +5,8 @@ import axios from "axios";
 import DateRangePicker from "../DateRangePicker/DateRangePicker";
 
 function FetchData({ csvJson, handleSetCsvJson, token, isTokenExist }) {
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSetStartDate = (startDate) => {
