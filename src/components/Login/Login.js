@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 
 function Login({ handleSetToken }) {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const [isTokenExist, setIsTokenExist] = useState(false);
+  const [isLoginButtonClick, setIsLoginButtonClick] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -13,14 +15,15 @@ function Login({ handleSetToken }) {
         cipherCode: password,
       })
       .then((res) => {
-        handleSetToken(res.data.data.jwt.access_token);
+        if (res.data.status === 1) {
+          setIsTokenExist(true);
+          handleSetToken(res.data.data.jwt.access_token);
+        } else if (res.data.status === 0) {
+          setIsTokenExist(false);
+        }
       });
+    setIsLoginButtonClick(true);
   };
-
-  useEffect(() => {
-    console.log("userName", userName);
-    console.log("password", password);
-  }, [userName, password]);
 
   return (
     <div>
@@ -43,6 +46,13 @@ function Login({ handleSetToken }) {
       />
       <br></br>
       <button onClick={handleLogin}>Login</button>
+      {isLoginButtonClick ? (
+        isTokenExist ? (
+          <span>Login Succeeded</span>
+        ) : (
+          <span>Login Failed</span>
+        )
+      ) : null}
     </div>
   );
 }
