@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-function Login({ handleSetToken }) {
+function Login({ handleSetToken, handleSetIsTokenExist, isTokenExist }) {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
-  const [isTokenExist, setIsTokenExist] = useState(false);
+
   const [isLoginButtonClick, setIsLoginButtonClick] = useState(false);
 
   const handleLogin = async (e) => {
@@ -16,10 +16,10 @@ function Login({ handleSetToken }) {
       })
       .then((res) => {
         if (res.data.status === 1) {
-          setIsTokenExist(true);
+          handleSetIsTokenExist(true);
           handleSetToken(res.data.data.jwt.access_token);
         } else if (res.data.status === 0) {
-          setIsTokenExist(false);
+          handleSetIsTokenExist(false);
         }
       });
     setIsLoginButtonClick(true);

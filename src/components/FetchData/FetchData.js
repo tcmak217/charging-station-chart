@@ -4,7 +4,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import axios from "axios";
 import DateRangePicker from "../DateRangePicker/DateRangePicker";
 
-function FetchData({ csvJson, handleSetCsvJson, token }) {
+function FetchData({ csvJson, handleSetCsvJson, token, isTokenExist }) {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [isLoading, setIsLoading] = useState(false);
@@ -70,7 +70,7 @@ function FetchData({ csvJson, handleSetCsvJson, token }) {
           handleSetStartDate={handleSetStartDate}
           handleSetEndDate={handleSetEndDate}
         ></DateRangePicker>
-        <button onClick={handleFetch} disabled={token.length === 0}>
+        <button onClick={handleFetch} disabled={!isTokenExist}>
           Fetch data
         </button>
         {isLoading ? <CircularProgress /> : null}
