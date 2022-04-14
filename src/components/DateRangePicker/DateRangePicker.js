@@ -10,22 +10,17 @@ function DateRangePicker({
 }) {
   return (
     <>
-      Start Date
+      Date range
       <DatePicker
-        selected={startDate}
-        onChange={(date) => handleSetStartDate(date)}
-        selectsStart
+        selectsRange={true}
         startDate={startDate}
         endDate={endDate}
-      />
-      End Date
-      <DatePicker
-        selected={endDate}
-        onChange={(date) => handleSetEndDate(date)}
-        selectsEnd
-        startDate={startDate}
-        endDate={endDate}
-        minDate={startDate}
+        onChange={(update) => {
+          const [start, end] = update;
+          handleSetStartDate(start);
+          handleSetEndDate(end);
+        }}
+        isClearable={true}
       />
     </>
   );
