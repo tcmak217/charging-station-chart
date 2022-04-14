@@ -20,7 +20,6 @@ function DateRangePicker({
           handleSetStartDate(start);
           handleSetEndDate(end);
         }}
-        isClearable={true}
       />
     </>
   );
