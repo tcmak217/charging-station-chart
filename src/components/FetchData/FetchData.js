@@ -70,7 +70,9 @@ function FetchData({ csvJson, handleSetCsvJson, token }) {
           handleSetStartDate={handleSetStartDate}
           handleSetEndDate={handleSetEndDate}
         ></DateRangePicker>
-        <button onClick={handleFetch}>Fetch data</button>
+        <button onClick={handleFetch} disabled={token.length === 0}>
+          Fetch data
+        </button>
         {isLoading ? <CircularProgress /> : null}
       </form>
     </div>
