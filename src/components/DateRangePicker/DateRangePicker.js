@@ -20,6 +20,7 @@ function DateRangePicker({
           handleSetStartDate(start);
           handleSetEndDate(end);
         }}
+        dateFormat="dd/MM/yyyy"
       />
     </>
   );
