@@ -29,6 +29,7 @@ function App() {
 
   return (
     <>
+      <h1>Charging station usage chart</h1>
       <CsvUpload
         csvJson={csvJson}
         handleSetCsvJson={handleSetCsvJson}
