@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import moment from "moment";
 import CircularProgress from "@mui/material/CircularProgress";
 import axios from "axios";
@@ -26,8 +26,8 @@ function FetchData({ csvJson, handleSetCsvJson, token, isTokenExist }) {
         {
           type: "4",
           projectId: 30013,
-          startDate: moment(startDate).startOf("day").format(),
-          endDate: moment(endDate).endOf("day").format(),
+          startDate: moment(startDate).format(),
+          endDate: moment(endDate).format(),
           areas: [],
         },
         {
