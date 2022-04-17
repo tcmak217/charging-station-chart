@@ -170,6 +170,7 @@ function Chart({ csvJson, chartDataType }) {
             symbol: "none",
             areaStyle: {},
             stack: "x",
+            lineStyle: { opacity: 0 },
             data: interpolatedData
               .filter((row) => {
                 return row.ID === id;
