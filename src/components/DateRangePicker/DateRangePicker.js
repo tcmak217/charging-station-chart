@@ -10,17 +10,31 @@ function DateRangePicker({
 }) {
   return (
     <>
-      Date range
+      Date range <br></br>
+      From
       <DatePicker
-        selectsRange={true}
         startDate={startDate}
         endDate={endDate}
-        onChange={(update) => {
-          const [start, end] = update;
+        selected={startDate}
+        showTimeSelect
+        onChange={(start) => {
+          console.log(start);
           handleSetStartDate(start);
+        }}
+        dateFormat="dd/MM/yyyy h:mm aa"
+      />
+      To
+      <DatePicker
+        startDate={startDate}
+        endDate={endDate}
+        selected={endDate}
+        showTimeSelect
+        onChange={(end) => {
+          console.log(end);
           handleSetEndDate(end);
         }}
-        dateFormat="dd/MM/yyyy"
+        minDate={startDate}
+        dateFormat="dd/MM/yyyy h:mm aa"
       />
     </>
   );
