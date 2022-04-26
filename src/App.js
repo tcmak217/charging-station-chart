@@ -4,6 +4,7 @@ import Chart from "./components/Chart/Chart";
 import FetchData from "./components/FetchData/FetchData";
 import ChartPicker from "./components/ChartPicker/ChartPicker";
 import Login from "./components/Login/Login";
+import ExportCsv from "./components/ExportCsv/ExportCsv";
 
 function App() {
   const [csvJson, setCsvJson] = useState({});
@@ -56,6 +57,7 @@ function App() {
         chartDataType={chartDataType}
         handleSetChartDataType={handleSetChartDataType}
       ></ChartPicker>
+      <ExportCsv csvJson={csvJson}></ExportCsv>
       <Chart csvJson={csvJson} chartDataType={chartDataType}></Chart>
     </>
   );
