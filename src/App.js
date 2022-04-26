@@ -10,6 +10,7 @@ function App() {
   const [chartDataType, setChartDataType] = useState("Current");
   const [token, setToken] = useState("");
   const [isTokenExist, setIsTokenExist] = useState(false);
+  const [projectID, setProjectID] = useState();
 
   const handleSetCsvJson = (csvJson) => {
     setCsvJson(csvJson);
@@ -27,6 +28,10 @@ function App() {
     setIsTokenExist(isTokenExist);
   };
 
+  const handleProjectID = (projectID) => {
+    setProjectID(projectID);
+  };
+
   return (
     <>
       <h1>Charging station usage chart</h1>
@@ -38,12 +43,14 @@ function App() {
         handleSetToken={handleSetToken}
         handleSetIsTokenExist={handleSetIsTokenExist}
         isTokenExist={isTokenExist}
+        handleProjectID={handleProjectID}
       ></Login>
       <FetchData
         token={token}
         csvJson={csvJson}
         handleSetCsvJson={handleSetCsvJson}
         isTokenExist={isTokenExist}
+        projectID={projectID}
       ></FetchData>
       <ChartPicker
         chartDataType={chartDataType}

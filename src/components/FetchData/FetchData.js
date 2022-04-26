@@ -4,7 +4,13 @@ import CircularProgress from "@mui/material/CircularProgress";
 import axios from "axios";
 import DateRangePicker from "../DateRangePicker/DateRangePicker";
 
-function FetchData({ csvJson, handleSetCsvJson, token, isTokenExist }) {
+function FetchData({
+  csvJson,
+  handleSetCsvJson,
+  token,
+  isTokenExist,
+  projectID,
+}) {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -25,7 +31,7 @@ function FetchData({ csvJson, handleSetCsvJson, token, isTokenExist }) {
         "https://open.delightintl.com/api/device-status/query",
         {
           type: "4",
-          projectId: 30013,
+          projectId: projectID,
           startDate: moment(startDate).format(),
           endDate: moment(endDate).format(),
           areas: [],
