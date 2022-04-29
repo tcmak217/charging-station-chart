@@ -123,8 +123,8 @@ function Chart({ csvJson, chartDataType }) {
       title: {
         text: "Stacked chart",
       },
-      xAxis: { type: "time" },
-      yAxis: { type: "value" },
+      xAxis: { name: "Time", type: "time" },
+      yAxis: { name: "Current", type: "value" },
       dataZoom: { type: "inside" },
       series: [],
       legend: {},
@@ -160,16 +160,21 @@ function Chart({ csvJson, chartDataType }) {
       const interpolatedData = interpolation(csvJson);
 
       newChart.setOption({
+        yAxis: {
+          name: chartDataType === "Current" ? "Current (A)" : "Switch",
+          type: "value",
+        },
         series: idList.map((id) => {
           return {
             name: nameList.filter((row) => {
               return row.ID === id;
             })[0].Name,
             type: "line",
-            smooth: true,
+            smooth: false,
             symbol: "none",
             areaStyle: {},
             stack: "x",
+            lineStyle: { opacity: 0 },
             data: interpolatedData
               .filter((row) => {
                 return row.ID === id;

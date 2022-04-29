@@ -39,7 +39,7 @@ function CsvUpload({ csvJson, handleSetCsvJson }) {
         )
         .map((row) => {
           return {
-            Date: moment(row.Date, "MM/DD/YY hh:mm:ss a").format(),
+            Date: moment(row.Date).format(),
             ID: row.ID,
             "Current Sum(A)": row["Current Sum(A)"],
             Name: row.Name,

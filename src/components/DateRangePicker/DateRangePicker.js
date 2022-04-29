@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import DatePicker from "react-datepicker";
+import { addDays, addHours } from "date-fns";
 import "react-datepicker/dist/react-datepicker.css";
 
 function DateRangePicker({
@@ -8,24 +9,53 @@ function DateRangePicker({
   handleSetStartDate,
   handleSetEndDate,
 }) {
+  const isPassedTime = (time) => {
+    const currentDate = new Date();
+    const selectedDate = new Date(time);
+
+    return currentDate.getTime() > selectedDate.getTime();
+  };
+
+  const isNextDay = (time) => {
+    const selectedDate = new Date(time);
+
+    return (
+      selectedDate.getTime() < addHours(startDate, 24).getTime() &&
+      selectedDate.getTime() > startDate
+    );
+  };
+
   return (
     <>
-      Start Date
+      Date range <br></br>
+      From
       <DatePicker
+        startDate={startDate}
+        endDate={endDate}
         selected={startDate}
-        onChange={(date) => handleSetStartDate(date)}
-        selectsStart
-        startDate={startDate}
-        endDate={endDate}
+        showTimeSelect
+        onChange={(start) => {
+          console.log(start);
+          handleSetStartDate(start);
+        }}
+        filterTime={isPassedTime}
+        maxDate={new Date()}
+        dateFormat="dd/MM/yyyy h:mm aa"
       />
-      End Date
+      To
       <DatePicker
-        selected={endDate}
-        onChange={(date) => handleSetEndDate(date)}
-        selectsEnd
         startDate={startDate}
         endDate={endDate}
+        selected={endDate ? endDate : startDate}
+        showTimeSelect
+        onChange={(end) => {
+          console.log(end);
+          handleSetEndDate(end);
+        }}
+        filterTime={isNextDay}
         minDate={startDate}
+        maxDate={startDate ? addDays(startDate, 1) : new Date()}
+        dateFormat="dd/MM/yyyy h:mm aa"
       />
     </>
   );

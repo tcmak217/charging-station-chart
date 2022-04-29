@@ -1,14 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import moment from "moment";
 import CircularProgress from "@mui/material/CircularProgress";
 import axios from "axios";
 import DateRangePicker from "../DateRangePicker/DateRangePicker";
 
-function FetchData({ csvJson, handleSetCsvJson }) {
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+function FetchData({
+  csvJson,
+  handleSetCsvJson,
+  token,
+  isTokenExist,
+  projectID,
+}) {
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSetStartDate = (startDate) => {
@@ -21,24 +25,15 @@ function FetchData({ csvJson, handleSetCsvJson }) {
 
   const handleFetch = async (e) => {
     e.preventDefault();
-    let token;
     setIsLoading(true);
-    await axios
-      .post("https://open.delightintl.com/api/auth/login", {
-        username: userName,
-        cipherCode: password,
-      })
-      .then((res) => {
-        token = res.data.data.jwt.access_token;
-      });
     await axios
       .post(
         "https://open.delightintl.com/api/device-status/query",
         {
           type: "4",
-          projectId: 30013,
-          startDate: moment(startDate).startOf("day").format(),
-          endDate: moment(endDate).endOf("day").format(),
+          projectId: projectID,
+          startDate: moment(startDate).format(),
+          endDate: moment(endDate).format(),
           areas: [],
         },
         {
@@ -72,39 +67,18 @@ function FetchData({ csvJson, handleSetCsvJson }) {
     setIsLoading(false);
   };
 
-  useEffect(() => {
-    // console.log("userName", userName);
-    // console.log("password", password);
-  }, [userName, password]);
-
   return (
     <div>
       <form>
-        <label htmlFor="userName">Username: </label>
-        <input
-          type="text"
-          name="userName"
-          id="userName"
-          value={userName}
-          onChange={(e) => setUserName(e.target.value)}
-        />
-        <br></br>
-        <label htmlFor="password">Password: </label>
-        <input
-          type="password"
-          name="password"
-          id="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <br></br>
         <DateRangePicker
           startDate={startDate}
           endDate={endDate}
           handleSetStartDate={handleSetStartDate}
           handleSetEndDate={handleSetEndDate}
         ></DateRangePicker>
-        <button onClick={handleFetch}>Fetch data</button>
+        <button onClick={handleFetch} disabled={!isTokenExist}>
+          Fetch data
+        </button>
         {isLoading ? <CircularProgress /> : null}
       </form>
     </div>

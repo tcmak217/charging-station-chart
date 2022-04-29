@@ -24,8 +24,8 @@ function ChartPicker({ chartDataType, handleSetChartDataType }) {
             label="Chart data"
             onChange={handleChange}
           >
-            <MenuItem value={"Current"}>Current</MenuItem>
-            <MenuItem value={"Switch"}>Switch</MenuItem>
+            <MenuItem value={"Current"}>Charger Current(A)</MenuItem>
+            <MenuItem value={"Switch"}>No. of EV plugged-in</MenuItem>
           </Select>
         </FormControl>
       </Box>
