@@ -170,7 +170,7 @@ function Chart({ csvJson, chartDataType }) {
               return row.ID === id;
             })[0].Name,
             type: "line",
-            smooth: true,
+            smooth: false,
             symbol: "none",
             areaStyle: {},
             stack: "x",
