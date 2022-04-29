@@ -1,10 +1,14 @@
 import React from "react";
 import Papa from "papaparse";
+import moment from "moment";
 import { saveAs } from "file-saver";
 
 function ExportCsv({ csvJson }) {
   const unparseToCsv = () => {
-    let csv = Papa.unparse(csvJson);
+    let exportJson = csvJson.map((row) => {
+      return { ...row, Date: moment(row.Date) };
+    });
+    let csv = Papa.unparse(exportJson);
     console.log(csv);
     let blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
     saveAs(blob, "example.csv");
